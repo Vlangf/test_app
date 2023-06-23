@@ -8,3 +8,15 @@ for run requests:
 2. run ``python3 send_requests.py --host http://vuln_app_host:port --proxy http://example:8090 --count 3``
 
 count - how many times requests will be sent, default is 1
+
+#
+
+first start node & app
+```
+docker-compose up app node
+```
+
+then you can start tester container
+```
+docker-compose run tester bash
+```

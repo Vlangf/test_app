@@ -1,8 +1,27 @@
 version: '3.7'
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     ports:
       - 8000:8000
+  node:
+    image: wallarm/node:4.6.2-1
+    depends_on:
+      - app
+    ports:
+      - 8011:80
+    environment:
+      - WALLARM_API_TOKEN=TOKEN
+      - WALLARM_API_HOST=URL
+    volumes:
+      - ./nginx_conf/default:/etc/nginx/sites-enabled/default
+  tester:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+     - ./:/app
+    depends_on:
+      - node
