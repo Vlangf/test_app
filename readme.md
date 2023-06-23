@@ -5,6 +5,6 @@ you can see swagger here ``http://0.0.0.0:8000/docs``
 
 for run requests:
 1. need lib requests ``pip3 install requests``
-2. run ``python3 send_requests.py --host http://example:8888 --proxy http://example:8090 --count 3``
+2. run ``python3 send_requests.py --host http://vuln_app_host:port --proxy http://example:8090 --count 3``
 
 count - how many times requests will be sent, default is 1
