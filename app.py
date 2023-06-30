@@ -2,8 +2,6 @@ import uvicorn
 
 from fastapi import FastAPI
 
-from database.db import prepare_test_db
-
 from endpoints.command_injection import router as command_injection
 from endpoints.csrf import router as csrf
 from endpoints.file_inclusion import router as file_inclusion
@@ -13,7 +11,6 @@ from endpoints.SQL_Injection import router as SQL_Injection
 from endpoints.xss import router as xss
 from endpoints.open_redirect import router as open_redirect
 
-prepare_test_db()
 app = FastAPI()
 
 app.include_router(command_injection)
