@@ -15,29 +15,31 @@ proxies = {
 }
 
 session = requests.session()
-session.proxies.update(proxies)
-session.verify = False
+#session.proxies.update(proxies)
+# session.verify = False
 
 
 def send_requests():
     print('start sending')
     # command injection
-    session.get(f'{host}/ping?host=1.1.1.1')
-    # csrf
-    session.get(f'{host}/transfer_form')
-    # file inclusion
-    session.get(f'{host}/page/%3Chtml%3E123%3C%2Fhtml%3E')
+    requests.get(f'{host}/ping?host=1.1.1.1')
+    # # csrf
+    requests.get(f'{host}/transfer_form')
+    # # file inclusion
+    requests.get(f'{host}/page/%3Chtml%3E123%3C%2Fhtml%3E')
     # file upload
     files = [('file', ('file', open('file_for_test', 'rb'), 'application/octet-stream'))]
-    session.post(f'{host}/upload_file', files=files)
-    # sql injection
-    session.get(f'{host}/users?id_=1')
-    # sql injection (bind)
-    session.get(f'{host}/users_bind?id_=1')
-    # xss
-    session.get(f'{host}/search?query=1')
+    requests.post(f'{host}/upload_file', files=files)
+    # # sql injection
+    requests.get(f'{host}/users?id_=1')
+    # # sql injection (bind)
+    requests.get(f'{host}/users_bind?id_=1')
+    # # xss
+    requests.get(f'{host}/search?query=1')
+    # open redirect
+    requests.get(f'{host}/open_redirect?redirect_to=https://wallarm.com')
     print('sent')
 
-
+ 
 for _ in range(int(args.count)):
     send_requests()

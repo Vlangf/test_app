@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+  node-v1:
+    image: wallarm/node:4.6.2-1
+    depends_on:
+      - app
+    ports:
+      - 8011:80
+    environment:
+    - WALLARM_API_TOKEN=${WALLARM_API_TOKEN_NODE}
+    - WALLARM_API_HOST=${WALLARM_API_HOST}
+    - WALLARM_API_CA_VERIFY=${WALLARM_API_CA_VERIFY}
+    - NGINX_BACKEND=${NGINX_BACKEND}
+  tester:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - node-v1
+  scanner:
+    image: dkr.wallarm.com/wallarm-cloud/oas-fast-scanner:${OAS_SCANNER_TAG}
+    depends_on:
+      - app
+    environment:
+      - WALLARM_API_HOST=${WALLARM_API_HOST}
+      - WALLARM_API_TOKEN=${WALLARM_API_TOKEN_SCANNER}
+      - TARGET_URL=${TARGET_URL}
+      - WALLARM_TESTING_POLICY_ID=${WALLARM_TESTING_POLICY_ID}
+      - WALLARM_API_CA_VERIFY=${WALLARM_API_CA_VERIFY}
